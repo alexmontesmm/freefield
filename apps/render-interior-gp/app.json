@@ -1,0 +1,236 @@
+{
+  "$schema": "../../schema/app.schema.json",
+  "id": "render-interior-gp",
+  "name": "Render Interior GP",
+  "section": "image",
+  "summary": "Convierte un croquis de interior en un render fotorrealista de un espacio de vivienda GP Vivienda.",
+  "higgsfield_feature": "Render Interior GP Vivienda",
+  "modes": [
+    "render-fachada-gp",
+    "render-interior-gp",
+    "render-aerea-gp",
+    "render-vida-gp"
+  ],
+  "mode_label": "Interior",
+  "pack": "image-flux3",
+  "status": "ready",
+  "workflow": "workflow.api.json",
+  "source": {
+    "template": "image_flux3_klein_distilled_image_edit.json",
+    "comfyui": "0.42.0",
+    "notes": "Template app written by tools/template_apps.py: the workflow is apps/edit's (built by tools/build_apps.py); the prompt below is fixed and \"Extra direction\" is appended to it."
+  },
+  "inputs": [
+    {
+      "id": "image",
+      "type": "image",
+      "label": "Croquis o foto de interior",
+      "required": true,
+      "limits": {
+        "max_mb": 20
+      },
+      "bind": [
+        {
+          "node": "11",
+          "field": "image"
+        }
+      ]
+    },
+    {
+      "id": "space",
+      "type": "select",
+      "label": "Espacio",
+      "default": "an open-plan living and dining room",
+      "options": [
+        {
+          "value": "an open-plan living and dining room",
+          "label": "Sala-comedor"
+        },
+        {
+          "value": "a modern kitchen with island and bar stools",
+          "label": "Cocina"
+        },
+        {
+          "value": "a master bedroom with a queen bed and a large window",
+          "label": "Recámara principal"
+        },
+        {
+          "value": "a master bathroom with a double vanity, a glass shower and warm tile",
+          "label": "Baño principal"
+        },
+        {
+          "value": "a residential back patio with a dining area and a small garden",
+          "label": "Patio trasero"
+        }
+      ]
+    },
+    {
+      "id": "style",
+      "type": "select",
+      "label": "Estilo decorativo",
+      "default": "contemporary warm Mexican",
+      "options": [
+        {
+          "value": "contemporary warm Mexican",
+          "label": "Contemporáneo cálido (mexicano moderno)"
+        },
+        {
+          "value": "minimalist Scandinavian",
+          "label": "Minimalista escandinavo"
+        },
+        {
+          "value": "warm industrial with exposed concrete and black metal accents",
+          "label": "Industrial cálido"
+        },
+        {
+          "value": "rustic Mexican with carved wood, woven textiles and clay accents",
+          "label": "Rústico mexicano"
+        },
+        {
+          "value": "modern boho with natural fibers, warm neutrals and plants",
+          "label": "Boho moderno"
+        }
+      ]
+    },
+    {
+      "id": "palette",
+      "type": "select",
+      "label": "Paleta",
+      "default": "warm neutral cream, sand and natural wood",
+      "options": [
+        {
+          "value": "warm neutral cream, sand and natural wood",
+          "label": "Neutros cálidos (crema, arena, madera)"
+        },
+        {
+          "value": "crisp white and light oak",
+          "label": "Blancos y madera clara"
+        },
+        {
+          "value": "soft gray with terracotta and brick accents",
+          "label": "Grises y terracota"
+        },
+        {
+          "value": "sage green and warm walnut wood",
+          "label": "Verdes salvia y madera"
+        },
+        {
+          "value": "deep navy with aged brass fixtures",
+          "label": "Azules profundos y latón"
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "type": "select",
+      "label": "Momento del día",
+      "default": "in the morning with bright soft daylight pouring through the windows",
+      "options": [
+        {
+          "value": "in the morning with bright soft daylight pouring through the windows",
+          "label": "Mañana luminosa"
+        },
+        {
+          "value": "at golden hour with warm orange light through the windows",
+          "label": "Atardecer cálido"
+        },
+        {
+          "value": "at night with warm interior lighting from lamps and pendant lights",
+          "label": "Noche con luces cálidas"
+        },
+        {
+          "value": "at midday with soft diffused light from an overcast sky",
+          "label": "Mediodía nublado"
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "type": "textarea",
+      "label": "Extra direction",
+      "default": "",
+      "help": "Added at the end of the app's prompt.",
+      "bind": [
+        {
+          "node": "4",
+          "field": "text",
+          "template": "Turn the interior sketch from <ref_image_0> into a photorealistic architectural interior rendering of a {space} in a Mexican residential home typical of the Monterrey metropolitan area: {style} decor, {palette} palette, {time}, warm natural ambient, no people in the frame, professional real-estate interior photography, high detail, ultra-realistic. Keep the composition, perspective and furniture layout exactly as drawn in the sketch. {details}"
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "type": "slider",
+      "label": "Steps",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "bind": [
+        {
+          "node": "7",
+          "field": "steps"
+        }
+      ]
+    },
+    {
+      "id": "seed",
+      "type": "seed",
+      "label": "Seed",
+      "default": -1,
+      "help": "-1 picks a random seed",
+      "bind": [
+        {
+          "node": "7",
+          "field": "seed"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "node": "9",
+      "type": "image",
+      "label": "Result"
+    }
+  ],
+  "models": [
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
+      "dir": "diffusion_models",
+      "gb": 5.83,
+      "phase": "denoise",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+      "dir": "text_encoders",
+      "gb": 4.86,
+      "phase": "encode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "vae/flux2-vae.safetensors",
+      "dir": "vae",
+      "gb": 0.34,
+      "phase": "decode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    }
+  ],
+  "credits": [
+    "FLUX 3 Image Klein by Black Forest Labs (FLUX Kommunity License)"
+  ],
+  "test": {
+    "image": "test/portrait.png",
+    "space": "an open-plan living and dining room",
+    "style": "contemporary warm Mexican",
+    "palette": "warm neutral cream, sand and natural wood",
+    "time": "in the morning with bright soft daylight pouring through the windows"
+  }
+}

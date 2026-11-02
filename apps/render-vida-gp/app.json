@@ -1,0 +1,228 @@
+{
+  "$schema": "../../schema/app.schema.json",
+  "id": "render-vida-gp",
+  "name": "Render Lifestyle GP",
+  "section": "image",
+  "summary": "Agrega personas y vida cotidiana a un render terminado de casa GP, para material de marketing aspiracional.",
+  "higgsfield_feature": "Render Lifestyle GP Vivienda",
+  "modes": [
+    "render-fachada-gp",
+    "render-interior-gp",
+    "render-aerea-gp",
+    "render-vida-gp"
+  ],
+  "mode_label": "Lifestyle",
+  "pack": "image-flux3",
+  "status": "ready",
+  "workflow": "workflow.api.json",
+  "source": {
+    "template": "image_flux3_klein_distilled_image_edit.json",
+    "comfyui": "0.42.0",
+    "notes": "Template app written by tools/template_apps.py: the workflow is apps/edit's (built by tools/build_apps.py); the prompt below is fixed and \"Extra direction\" is appended to it."
+  },
+  "inputs": [
+    {
+      "id": "image",
+      "type": "image",
+      "label": "Render terminado o foto de casa",
+      "required": true,
+      "limits": {
+        "max_mb": 20
+      },
+      "bind": [
+        {
+          "node": "11",
+          "field": "image"
+        }
+      ]
+    },
+    {
+      "id": "people",
+      "type": "select",
+      "label": "Personas",
+      "default": "a young couple in their late twenties",
+      "options": [
+        {
+          "value": "a young couple in their late twenties",
+          "label": "Pareja joven"
+        },
+        {
+          "value": "a Mexican family with two young children aged 6 and 9",
+          "label": "Familia con 2 niños"
+        },
+        {
+          "value": "a multigenerational Mexican family with grandparents, parents and two children",
+          "label": "Familia multigeneracional"
+        },
+        {
+          "value": "a woman in her thirties with a medium-sized friendly dog",
+          "label": "Mujer sola con perro"
+        },
+        {
+          "value": "a couple in their fifties",
+          "label": "Pareja adulta"
+        }
+      ]
+    },
+    {
+      "id": "scene",
+      "type": "select",
+      "label": "Escena",
+      "default": "standing at the front entrance, smiling and waving at the viewer",
+      "options": [
+        {
+          "value": "standing at the front entrance, smiling and waving at the viewer",
+          "label": "En la entrada saludando"
+        },
+        {
+          "value": "playing together on the front driveway",
+          "label": "Jugando frente a casa"
+        },
+        {
+          "value": "walking up to the home together",
+          "label": "Caminando hacia la casa"
+        },
+        {
+          "value": "unloading moving boxes from a car in the driveway, looking excited",
+          "label": "Mudanza (cajas, ilusión)"
+        },
+        {
+          "value": "gathered on the front patio sharing a meal around a small table",
+          "label": "En el patio compartiendo"
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "type": "select",
+      "label": "Momento del día",
+      "default": "at golden hour with warm sunset light",
+      "options": [
+        {
+          "value": "at golden hour with warm sunset light",
+          "label": "Atardecer dorado"
+        },
+        {
+          "value": "in the morning with bright soft daylight",
+          "label": "Mañana luminosa"
+        },
+        {
+          "value": "at night with the home's warm interior lights glowing",
+          "label": "Noche con luces cálidas"
+        }
+      ]
+    },
+    {
+      "id": "mood",
+      "type": "select",
+      "label": "Mood visual",
+      "default": "warm and welcoming family mood",
+      "options": [
+        {
+          "value": "warm and welcoming family mood",
+          "label": "Cálido y familiar"
+        },
+        {
+          "value": "cheerful and relaxed candid mood",
+          "label": "Alegre y relajado"
+        },
+        {
+          "value": "elegant aspirational mood with cinematic composition",
+          "label": "Aspiracional elegante"
+        },
+        {
+          "value": "dynamic candid mood with light motion and natural laughter",
+          "label": "Dinámico (movimiento)"
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "type": "textarea",
+      "label": "Extra direction",
+      "default": "",
+      "help": "Added at the end of the app's prompt.",
+      "bind": [
+        {
+          "node": "4",
+          "field": "text",
+          "template": "Add life to the architectural rendering in <ref_image_0>: a photorealistic lifestyle photograph of the same home with {people} {scene}, {time}, {mood}, no architectural changes to the home itself, keep the facade, materials, windows and lot exactly as in the reference, professional lifestyle real-estate photography, high detail, ultra-realistic. {details}"
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "type": "slider",
+      "label": "Steps",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "bind": [
+        {
+          "node": "7",
+          "field": "steps"
+        }
+      ]
+    },
+    {
+      "id": "seed",
+      "type": "seed",
+      "label": "Seed",
+      "default": -1,
+      "help": "-1 picks a random seed",
+      "bind": [
+        {
+          "node": "7",
+          "field": "seed"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "node": "9",
+      "type": "image",
+      "label": "Result"
+    }
+  ],
+  "models": [
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
+      "dir": "diffusion_models",
+      "gb": 5.83,
+      "phase": "denoise",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+      "dir": "text_encoders",
+      "gb": 4.86,
+      "phase": "encode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "vae/flux2-vae.safetensors",
+      "dir": "vae",
+      "gb": 0.34,
+      "phase": "decode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    }
+  ],
+  "credits": [
+    "FLUX 3 Image Klein by Black Forest Labs (FLUX Kommunity License)"
+  ],
+  "test": {
+    "image": "test/portrait.png",
+    "people": "a Mexican family with two young children aged 6 and 9",
+    "scene": "standing at the front entrance, smiling and waving at the viewer",
+    "time": "at golden hour with warm sunset light",
+    "mood": "warm and welcoming family mood"
+  }
+}

@@ -87,6 +87,22 @@ REFS = {
 }
 REFS["ref-tpl-garment"] = ("Product photo of a mustard yellow knit cardigan laid flat on a plain white background, top-down, soft even light", 1024, 1024,
                            "A garment on its own, for the two-reference apps.")
+REFS["ref-tpl-house-sketch"] = ("A rough architectural pencil sketch on white paper of a two-story single-family home facade seen from the front, "
+                                 "simple rectangular volume, flat roof, a central front door, two windows on the ground floor and three windows on the "
+                                 "upper floor, a short driveway on the right, loose confident lines, no color, no shading",
+                                 1280, 768, "Reference facade sketch for Render Fachada GP.")
+REFS["ref-tpl-interior-sketch"] = ("A rough architectural pencil sketch on white paper of a residential living room and open kitchen interior seen from a "
+                                    "corner, a sofa and coffee table in the foreground, a dining table with four chairs in the middle, a kitchen counter with "
+                                    "stools at the back, a tall window on the left, loose confident lines, no color, no shading",
+                                    1280, 768, "Reference interior sketch for Render Interior GP.")
+REFS["ref-tpl-aerial-sketch"] = ("A rough architectural pencil sketch on white paper of a two-story single-family home seen from a three-quarter aerial "
+                                  "angle, the house in the middle of its rectangular lot, a driveway in front, a back yard behind, two neighboring lots "
+                                  "faintly indicated on either side, loose confident lines, no color, no shading",
+                                  1280, 768, "Reference aerial sketch for Render Aérea GP.")
+REFS["ref-tpl-house-render"] = ("Photorealistic architectural rendering of a two-story contemporary Mexican residential home with white stucco walls, "
+                                 "dark window frames and a flat roof, a short driveway, palm trees and desert plants in the front yard, at golden hour, "
+                                 "no people in the frame, professional real-estate photography, ultra-realistic",
+                                 1280, 768, "Reference finished render for Render Lifestyle GP.")
 PERSON, MAN, WOMAN, PRODUCT, SNEAKER, SCENE, LAKE = "ref-face-a", "ref-fx-man-b", "ref-fx-woman-a", "ref-product", "ref-fx-sneaker", "ref-fx-cafe", "ref-fx-lake"
 WOMAN_B, STREET, STORM, ROAD, GARMENT, CHARACTER = "ref-fx-woman-b", "ref-fx-street", "ref-fx-storm", "ref-fx-road-plain", "ref-tpl-garment", "ref-character"
 PORTRAIT = "9:16 (Portrait Widescreen)"
@@ -267,6 +283,140 @@ A("sketch-to-real", "Sketch to Real", "Sketch-to-Real", "play", "edit", "Your sk
   "Turns a sketch into a photorealistic photo of the same scene.",
   "Turn the sketch from <ref_image_0> into a photorealistic photograph of the same scene: same composition and subjects, real materials, natural light.",
   [], "ref-tpl-sketch", {}, "A real cat on a real windowsill, same layout as the sketch.")
+A("render-fachada-gp", "Render Fachada GP", "Render Fachada GP Vivienda", "play", "edit", "Croquis de fachada",
+  "Convierte un croquis de fachada en un render fotorrealista estilo GP Vivienda (Monterrey).",
+  "Turn the architectural sketch from <ref_image_0> into a photorealistic architectural rendering of a single-family home in a Mexican residential "
+  "development typical of the Monterrey metropolitan area: a {style}, {materials} facade, {vegetation}, {time}, a short clean driveway, "
+  "no people and no cars in the frame, professional real-estate photography, high detail, ultra-realistic. "
+  "Keep the composition, proportions and openings exactly as drawn in the sketch.",
+  [sel("style", "Estilo arquitectónico",
+       [("Contemporáneo (líneas limpias)", "two-story contemporary residential home with clean lines, dark window frames and a flat or low-slope roof"),
+        ("Tradicional mexicano", "two-story traditional Mexican residential home with a clay-tile sloped roof and quarry-stone accents"),
+        ("Mediterráneo", "two-story Mediterranean residential home with light terracotta roof tiles and warm stucco walls"),
+        ("Minimalista", "two-story minimalist residential home with exposed concrete, warm wood accents and large glazed openings")]),
+   sel("materials", "Materiales",
+       [("Estuco blanco + madera", "white stucco walls with warm wood accents around the entrance"),
+        ("Piedra laja + estuco beige", "flagstone-clad base and beige stucco upper floor"),
+        ("Ladrillo gris + concreto aparente", "gray brick walls and exposed-concrete details"),
+        ("Cantera + madera clara", "Mexican quarry-stone cladding and light wood details")]),
+   sel("vegetation", "Vegetación",
+       [("Palmas y xerófilas (Nuevo León)", "with palm trees and native xeric plants typical of Nuevo León in the front yard"),
+        ("Árboles frondosos y pasto", "with leafy trees and a well-kept green lawn in the front yard"),
+        ("Jardín con agaves y mezquite", "with a xeric garden of agaves, nolinas and a small mesquite tree in the front yard"),
+        ("Jardín minimalista con grava", "with a minimalist front yard of white gravel and sculpted shrubs")]),
+   sel("time", "Momento del día",
+       [("Atardecer dorado", "at golden hour under warm orange sunset light"),
+        ("Mediodía soleado", "at midday under bright warm sunlight with sharp shadows"),
+        ("Noche con luces cálidas", "at night with warm interior lights glowing through the windows and discreet landscape lighting"),
+        ("Mañana nublada", "on an overcast morning under soft diffused light")])],
+  "ref-tpl-house-sketch",
+  {"style": "two-story contemporary residential home with clean lines, dark window frames and a flat or low-slope roof",
+   "materials": "white stucco walls with warm wood accents around the entrance",
+   "vegetation": "with palm trees and native xeric plants typical of Nuevo León in the front yard",
+   "time": "at golden hour under warm orange sunset light"},
+  "A photorealistic two-story Mexican residential home that keeps the sketch's volume and opening layout.",
+  modes=["render-fachada-gp", "render-interior-gp", "render-aerea-gp", "render-vida-gp"], mode_label="Fachada")
+A("render-interior-gp", "Render Interior GP", "Render Interior GP Vivienda", "play", "edit", "Croquis o foto de interior",
+  "Convierte un croquis de interior en un render fotorrealista de un espacio de vivienda GP Vivienda.",
+  "Turn the interior sketch from <ref_image_0> into a photorealistic architectural interior rendering of a {space} in a Mexican residential home "
+  "typical of the Monterrey metropolitan area: {style} decor, {palette} palette, {time}, warm natural ambient, no people in the frame, "
+  "professional real-estate interior photography, high detail, ultra-realistic. "
+  "Keep the composition, perspective and furniture layout exactly as drawn in the sketch.",
+  [sel("space", "Espacio",
+       [("Sala-comedor", "an open-plan living and dining room"),
+        ("Cocina", "a modern kitchen with island and bar stools"),
+        ("Recámara principal", "a master bedroom with a queen bed and a large window"),
+        ("Baño principal", "a master bathroom with a double vanity, a glass shower and warm tile"),
+        ("Patio trasero", "a residential back patio with a dining area and a small garden")]),
+   sel("style", "Estilo decorativo",
+       [("Contemporáneo cálido (mexicano moderno)", "contemporary warm Mexican"),
+        ("Minimalista escandinavo", "minimalist Scandinavian"),
+        ("Industrial cálido", "warm industrial with exposed concrete and black metal accents"),
+        ("Rústico mexicano", "rustic Mexican with carved wood, woven textiles and clay accents"),
+        ("Boho moderno", "modern boho with natural fibers, warm neutrals and plants")]),
+   sel("palette", "Paleta",
+       [("Neutros cálidos (crema, arena, madera)", "warm neutral cream, sand and natural wood"),
+        ("Blancos y madera clara", "crisp white and light oak"),
+        ("Grises y terracota", "soft gray with terracotta and brick accents"),
+        ("Verdes salvia y madera", "sage green and warm walnut wood"),
+        ("Azules profundos y latón", "deep navy with aged brass fixtures")]),
+   sel("time", "Momento del día",
+       [("Mañana luminosa", "in the morning with bright soft daylight pouring through the windows"),
+        ("Atardecer cálido", "at golden hour with warm orange light through the windows"),
+        ("Noche con luces cálidas", "at night with warm interior lighting from lamps and pendant lights"),
+        ("Mediodía nublado", "at midday with soft diffused light from an overcast sky")])],
+  "ref-tpl-interior-sketch",
+  {"space": "an open-plan living and dining room",
+   "style": "contemporary warm Mexican",
+   "palette": "warm neutral cream, sand and natural wood",
+   "time": "in the morning with bright soft daylight pouring through the windows"},
+  "A photorealistic interior that keeps the sketch's layout and perspective.",
+  modes=["render-fachada-gp", "render-interior-gp", "render-aerea-gp", "render-vida-gp"], mode_label="Interior")
+A("render-aerea-gp", "Render Aérea GP", "Render Aérea GP Vivienda", "play", "edit", "Croquis o foto aérea",
+  "Convierte un croquis aéreo en un render fotorrealista 3/4 de la casa en su lote y entorno.",
+  "Turn the aerial sketch from <ref_image_0> into a photorealistic three-quarter aerial architectural rendering of a Mexican residential development "
+  "typical of the Monterrey metropolitan area, {view}: {density}, {vegetation}, {time}, no people and no cars in the frame, drone photography look, "
+  "high detail, ultra-realistic. Keep the lot layout and house footprint exactly as drawn in the sketch.",
+  [sel("view", "Ángulo de vista",
+       [("3/4 aérea (drone a 45°)", "shot from a drone at a 45-degree three-quarter aerial angle"),
+        ("Picado directo (nadir)", "shot straight down from directly above, top-down view"),
+        ("Nivel de calle a 30°", "shot from street level tilted up at 30 degrees"),
+        ("Isometría arquitectónica", "shown as a clean architectural isometric view")]),
+   sel("density", "Entorno",
+       [("Casa aislada en lote", "a single home standing alone on its lot"),
+        ("Casa con 2 vecinos a lado", "the home flanked by two similar neighboring homes on either side"),
+        ("Manzana completa", "a full block of six to eight similar homes arranged in a row"),
+        ("Fraccionamiento con calles curvas", "part of a residential development with curved streets and a central green area")]),
+   sel("vegetation", "Vegetación del fraccionamiento",
+       [("Palmas de calle alineadas", "with aligned palm trees along the street"),
+        ("Árboles frondosos y camellones verdes", "with leafy trees and green medians between homes"),
+        ("Jardines xéricos (NL)", "with xeric gardens of agaves and native desert plants typical of Nuevo León"),
+        ("Mínima vegetación, calles amplias", "with wide clean streets and minimal landscaping")]),
+   sel("time", "Momento del día",
+       [("Atardecer dorado", "at golden hour under warm orange sunset light"),
+        ("Mediodía soleado", "at midday under bright warm sunlight"),
+        ("Noche con luces de calle", "at night with warm street lamps and lit windows glowing"),
+        ("Amanecer con niebla ligera", "at dawn with soft light and a light morning mist")])],
+  "ref-tpl-aerial-sketch",
+  {"view": "shot from a drone at a 45-degree three-quarter aerial angle",
+   "density": "the home flanked by two similar neighboring homes on either side",
+   "vegetation": "with aligned palm trees along the street",
+   "time": "at golden hour under warm orange sunset light"},
+  "A photorealistic three-quarter aerial that keeps the lot and footprint from the sketch.",
+  modes=["render-fachada-gp", "render-interior-gp", "render-aerea-gp", "render-vida-gp"], mode_label="Aérea")
+A("render-vida-gp", "Render Lifestyle GP", "Render Lifestyle GP Vivienda", "play", "edit", "Render terminado o foto de casa",
+  "Agrega personas y vida cotidiana a un render terminado de casa GP, para material de marketing aspiracional.",
+  "Add life to the architectural rendering in <ref_image_0>: a photorealistic lifestyle photograph of the same home with {people} {scene}, "
+  "{time}, {mood}, no architectural changes to the home itself, keep the facade, materials, windows and lot exactly as in the reference, "
+  "professional lifestyle real-estate photography, high detail, ultra-realistic.",
+  [sel("people", "Personas",
+       [("Pareja joven", "a young couple in their late twenties"),
+        ("Familia con 2 niños", "a Mexican family with two young children aged 6 and 9"),
+        ("Familia multigeneracional", "a multigenerational Mexican family with grandparents, parents and two children"),
+        ("Mujer sola con perro", "a woman in her thirties with a medium-sized friendly dog"),
+        ("Pareja adulta", "a couple in their fifties")]),
+   sel("scene", "Escena",
+       [("En la entrada saludando", "standing at the front entrance, smiling and waving at the viewer"),
+        ("Jugando frente a casa", "playing together on the front driveway"),
+        ("Caminando hacia la casa", "walking up to the home together"),
+        ("Mudanza (cajas, ilusión)", "unloading moving boxes from a car in the driveway, looking excited"),
+        ("En el patio compartiendo", "gathered on the front patio sharing a meal around a small table")]),
+   sel("time", "Momento del día",
+       [("Atardecer dorado", "at golden hour with warm sunset light"),
+        ("Mañana luminosa", "in the morning with bright soft daylight"),
+        ("Noche con luces cálidas", "at night with the home's warm interior lights glowing")]),
+   sel("mood", "Mood visual",
+       [("Cálido y familiar", "warm and welcoming family mood"),
+        ("Alegre y relajado", "cheerful and relaxed candid mood"),
+        ("Aspiracional elegante", "elegant aspirational mood with cinematic composition"),
+        ("Dinámico (movimiento)", "dynamic candid mood with light motion and natural laughter")])],
+  "ref-tpl-house-render",
+  {"people": "a Mexican family with two young children aged 6 and 9",
+   "scene": "standing at the front entrance, smiling and waving at the viewer",
+   "time": "at golden hour with warm sunset light",
+   "mood": "warm and welcoming family mood"},
+  "The same home as the reference, with a family added in front; no architectural changes.",
+  modes=["render-fachada-gp", "render-interior-gp", "render-aerea-gp", "render-vida-gp"], mode_label="Lifestyle")
 A("paint-app", "Paint App", "Paint App", "play", "edit", "Your photo",
   "Your photo redrawn in a 1990s computer paint program.",
   "The photo from <ref_image_0> redrawn as a crude drawing made in a 1990s computer paint program: aliased lines, flat fill colors, a spray-can texture, "

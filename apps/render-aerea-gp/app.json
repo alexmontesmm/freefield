@@ -1,0 +1,224 @@
+{
+  "$schema": "../../schema/app.schema.json",
+  "id": "render-aerea-gp",
+  "name": "Render Aérea GP",
+  "section": "image",
+  "summary": "Convierte un croquis aéreo en un render fotorrealista 3/4 de la casa en su lote y entorno.",
+  "higgsfield_feature": "Render Aérea GP Vivienda",
+  "modes": [
+    "render-fachada-gp",
+    "render-interior-gp",
+    "render-aerea-gp",
+    "render-vida-gp"
+  ],
+  "mode_label": "Aérea",
+  "pack": "image-flux3",
+  "status": "ready",
+  "workflow": "workflow.api.json",
+  "source": {
+    "template": "image_flux3_klein_distilled_image_edit.json",
+    "comfyui": "0.42.0",
+    "notes": "Template app written by tools/template_apps.py: the workflow is apps/edit's (built by tools/build_apps.py); the prompt below is fixed and \"Extra direction\" is appended to it."
+  },
+  "inputs": [
+    {
+      "id": "image",
+      "type": "image",
+      "label": "Croquis o foto aérea",
+      "required": true,
+      "limits": {
+        "max_mb": 20
+      },
+      "bind": [
+        {
+          "node": "11",
+          "field": "image"
+        }
+      ]
+    },
+    {
+      "id": "view",
+      "type": "select",
+      "label": "Ángulo de vista",
+      "default": "shot from a drone at a 45-degree three-quarter aerial angle",
+      "options": [
+        {
+          "value": "shot from a drone at a 45-degree three-quarter aerial angle",
+          "label": "3/4 aérea (drone a 45°)"
+        },
+        {
+          "value": "shot straight down from directly above, top-down view",
+          "label": "Picado directo (nadir)"
+        },
+        {
+          "value": "shot from street level tilted up at 30 degrees",
+          "label": "Nivel de calle a 30°"
+        },
+        {
+          "value": "shown as a clean architectural isometric view",
+          "label": "Isometría arquitectónica"
+        }
+      ]
+    },
+    {
+      "id": "density",
+      "type": "select",
+      "label": "Entorno",
+      "default": "a single home standing alone on its lot",
+      "options": [
+        {
+          "value": "a single home standing alone on its lot",
+          "label": "Casa aislada en lote"
+        },
+        {
+          "value": "the home flanked by two similar neighboring homes on either side",
+          "label": "Casa con 2 vecinos a lado"
+        },
+        {
+          "value": "a full block of six to eight similar homes arranged in a row",
+          "label": "Manzana completa"
+        },
+        {
+          "value": "part of a residential development with curved streets and a central green area",
+          "label": "Fraccionamiento con calles curvas"
+        }
+      ]
+    },
+    {
+      "id": "vegetation",
+      "type": "select",
+      "label": "Vegetación del fraccionamiento",
+      "default": "with aligned palm trees along the street",
+      "options": [
+        {
+          "value": "with aligned palm trees along the street",
+          "label": "Palmas de calle alineadas"
+        },
+        {
+          "value": "with leafy trees and green medians between homes",
+          "label": "Árboles frondosos y camellones verdes"
+        },
+        {
+          "value": "with xeric gardens of agaves and native desert plants typical of Nuevo León",
+          "label": "Jardines xéricos (NL)"
+        },
+        {
+          "value": "with wide clean streets and minimal landscaping",
+          "label": "Mínima vegetación, calles amplias"
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "type": "select",
+      "label": "Momento del día",
+      "default": "at golden hour under warm orange sunset light",
+      "options": [
+        {
+          "value": "at golden hour under warm orange sunset light",
+          "label": "Atardecer dorado"
+        },
+        {
+          "value": "at midday under bright warm sunlight",
+          "label": "Mediodía soleado"
+        },
+        {
+          "value": "at night with warm street lamps and lit windows glowing",
+          "label": "Noche con luces de calle"
+        },
+        {
+          "value": "at dawn with soft light and a light morning mist",
+          "label": "Amanecer con niebla ligera"
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "type": "textarea",
+      "label": "Extra direction",
+      "default": "",
+      "help": "Added at the end of the app's prompt.",
+      "bind": [
+        {
+          "node": "4",
+          "field": "text",
+          "template": "Turn the aerial sketch from <ref_image_0> into a photorealistic three-quarter aerial architectural rendering of a Mexican residential development typical of the Monterrey metropolitan area, {view}: {density}, {vegetation}, {time}, no people and no cars in the frame, drone photography look, high detail, ultra-realistic. Keep the lot layout and house footprint exactly as drawn in the sketch. {details}"
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "type": "slider",
+      "label": "Steps",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "bind": [
+        {
+          "node": "7",
+          "field": "steps"
+        }
+      ]
+    },
+    {
+      "id": "seed",
+      "type": "seed",
+      "label": "Seed",
+      "default": -1,
+      "help": "-1 picks a random seed",
+      "bind": [
+        {
+          "node": "7",
+          "field": "seed"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "node": "9",
+      "type": "image",
+      "label": "Result"
+    }
+  ],
+  "models": [
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
+      "dir": "diffusion_models",
+      "gb": 5.83,
+      "phase": "denoise",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+      "dir": "text_encoders",
+      "gb": 4.86,
+      "phase": "encode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "vae/flux2-vae.safetensors",
+      "dir": "vae",
+      "gb": 0.34,
+      "phase": "decode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    }
+  ],
+  "credits": [
+    "FLUX 3 Image Klein by Black Forest Labs (FLUX Kommunity License)"
+  ],
+  "test": {
+    "image": "test/portrait.png",
+    "view": "shot from a drone at a 45-degree three-quarter aerial angle",
+    "density": "the home flanked by two similar neighboring homes on either side",
+    "vegetation": "with aligned palm trees along the street",
+    "time": "at golden hour under warm orange sunset light"
+  }
+}

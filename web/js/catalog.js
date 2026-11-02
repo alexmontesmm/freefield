@@ -31,7 +31,7 @@ export const CATEGORIES = [
     "asmr-product", "chameleon", "magic-button", "truck-ad", "kick-ad", "volcano-ad"] },
   { id: "portraits", apps: ["ai-influencer", "ai-influencer-photo", "photodump", "headshot", "commercial-faces", "style-snap", "skin-enhancer", "outfit-vending", "glitter-sticker", "fashion-factory", "try-on", "outfit-swap", "outfit-shot"] },
   { id: "clips", apps: ["behind-the-scenes", "asmr-whisper", "asmr-host", "roller-coaster", "storm-creature", "cloud-surf", "mukbang", "melting-doodle", "rap-video", "idol"] },
-  { id: "play", apps: ["game-styles", "plushie", "render-3d", "figure-3d", "pixel-game", "brick-toy", "sketch-to-real", "paint-app", "mural", "micro-beasts", "meme"] },
+  { id: "play", apps: ["game-styles", "plushie", "render-3d", "figure-3d", "pixel-game", "brick-toy", "sketch-to-real", "render-fachada-gp", "render-interior-gp", "render-aerea-gp", "render-vida-gp", "paint-app", "mural", "micro-beasts", "meme"] },
   { id: "templates", apps: ["j-magazine", "cafe-60s", "victory-card", "j-poster", "mascot", "burning-sunset", "comic-book", "giallo", "renaissance", "japanese-show", "breakdown", "edit-text", "image-effects", "color-grade"] },
 ];
 export function categoryOf(id) {
@@ -235,6 +235,10 @@ const TAGLINES = {
   "rap-video": ["You in a rap music video", "Tú en un video de rap"],
   renaissance: ["You as a Renaissance painting", "Tú como pintura renacentista"],
   "render-3d": ["A stylized 3D render", "Un render 3D estilizado"],
+  "render-fachada-gp": ["Facade sketch to GP-style render", "De croquis de fachada a render estilo GP"],
+  "render-interior-gp": ["Interior sketch to GP-style render", "De croquis de interior a render estilo GP"],
+  "render-aerea-gp": ["Aerial sketch to 3/4 GP render", "De croquis aéreo a render 3/4 GP"],
+  "render-vida-gp": ["Add life to a GP render", "Agrega vida a un render GP"],
   "roller-coaster": ["You on a roller coaster", "Tú en una montaña rusa"],
   shots: ["Nine framings of one image", "Nueve encuadres de una imagen"],
   "sketch-to-real": ["From a sketch to a photo", "De boceto a foto"],

@@ -1,0 +1,224 @@
+{
+  "$schema": "../../schema/app.schema.json",
+  "id": "render-fachada-gp",
+  "name": "Render Fachada GP",
+  "section": "image",
+  "summary": "Convierte un croquis de fachada en un render fotorrealista estilo GP Vivienda (Monterrey).",
+  "higgsfield_feature": "Render Fachada GP Vivienda",
+  "modes": [
+    "render-fachada-gp",
+    "render-interior-gp",
+    "render-aerea-gp",
+    "render-vida-gp"
+  ],
+  "mode_label": "Fachada",
+  "pack": "image-flux3",
+  "status": "ready",
+  "workflow": "workflow.api.json",
+  "source": {
+    "template": "image_flux3_klein_distilled_image_edit.json",
+    "comfyui": "0.42.0",
+    "notes": "Template app written by tools/template_apps.py: the workflow is apps/edit's (built by tools/build_apps.py); the prompt below is fixed and \"Extra direction\" is appended to it."
+  },
+  "inputs": [
+    {
+      "id": "image",
+      "type": "image",
+      "label": "Croquis de fachada",
+      "required": true,
+      "limits": {
+        "max_mb": 20
+      },
+      "bind": [
+        {
+          "node": "11",
+          "field": "image"
+        }
+      ]
+    },
+    {
+      "id": "style",
+      "type": "select",
+      "label": "Estilo arquitectónico",
+      "default": "two-story contemporary residential home with clean lines, dark window frames and a flat or low-slope roof",
+      "options": [
+        {
+          "value": "two-story contemporary residential home with clean lines, dark window frames and a flat or low-slope roof",
+          "label": "Contemporáneo (líneas limpias)"
+        },
+        {
+          "value": "two-story traditional Mexican residential home with a clay-tile sloped roof and quarry-stone accents",
+          "label": "Tradicional mexicano"
+        },
+        {
+          "value": "two-story Mediterranean residential home with light terracotta roof tiles and warm stucco walls",
+          "label": "Mediterráneo"
+        },
+        {
+          "value": "two-story minimalist residential home with exposed concrete, warm wood accents and large glazed openings",
+          "label": "Minimalista"
+        }
+      ]
+    },
+    {
+      "id": "materials",
+      "type": "select",
+      "label": "Materiales",
+      "default": "white stucco walls with warm wood accents around the entrance",
+      "options": [
+        {
+          "value": "white stucco walls with warm wood accents around the entrance",
+          "label": "Estuco blanco + madera"
+        },
+        {
+          "value": "flagstone-clad base and beige stucco upper floor",
+          "label": "Piedra laja + estuco beige"
+        },
+        {
+          "value": "gray brick walls and exposed-concrete details",
+          "label": "Ladrillo gris + concreto aparente"
+        },
+        {
+          "value": "Mexican quarry-stone cladding and light wood details",
+          "label": "Cantera + madera clara"
+        }
+      ]
+    },
+    {
+      "id": "vegetation",
+      "type": "select",
+      "label": "Vegetación",
+      "default": "with palm trees and native xeric plants typical of Nuevo León in the front yard",
+      "options": [
+        {
+          "value": "with palm trees and native xeric plants typical of Nuevo León in the front yard",
+          "label": "Palmas y xerófilas (Nuevo León)"
+        },
+        {
+          "value": "with leafy trees and a well-kept green lawn in the front yard",
+          "label": "Árboles frondosos y pasto"
+        },
+        {
+          "value": "with a xeric garden of agaves, nolinas and a small mesquite tree in the front yard",
+          "label": "Jardín con agaves y mezquite"
+        },
+        {
+          "value": "with a minimalist front yard of white gravel and sculpted shrubs",
+          "label": "Jardín minimalista con grava"
+        }
+      ]
+    },
+    {
+      "id": "time",
+      "type": "select",
+      "label": "Momento del día",
+      "default": "at golden hour under warm orange sunset light",
+      "options": [
+        {
+          "value": "at golden hour under warm orange sunset light",
+          "label": "Atardecer dorado"
+        },
+        {
+          "value": "at midday under bright warm sunlight with sharp shadows",
+          "label": "Mediodía soleado"
+        },
+        {
+          "value": "at night with warm interior lights glowing through the windows and discreet landscape lighting",
+          "label": "Noche con luces cálidas"
+        },
+        {
+          "value": "on an overcast morning under soft diffused light",
+          "label": "Mañana nublada"
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "type": "textarea",
+      "label": "Extra direction",
+      "default": "",
+      "help": "Added at the end of the app's prompt.",
+      "bind": [
+        {
+          "node": "4",
+          "field": "text",
+          "template": "Turn the architectural sketch from <ref_image_0> into a photorealistic architectural rendering of a single-family home in a Mexican residential development typical of the Monterrey metropolitan area: a {style}, {materials} facade, {vegetation}, {time}, a short clean driveway, no people and no cars in the frame, professional real-estate photography, high detail, ultra-realistic. Keep the composition, proportions and openings exactly as drawn in the sketch. {details}"
+        }
+      ]
+    },
+    {
+      "id": "steps",
+      "type": "slider",
+      "label": "Steps",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "bind": [
+        {
+          "node": "7",
+          "field": "steps"
+        }
+      ]
+    },
+    {
+      "id": "seed",
+      "type": "seed",
+      "label": "Seed",
+      "default": -1,
+      "help": "-1 picks a random seed",
+      "bind": [
+        {
+          "node": "7",
+          "field": "seed"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "node": "9",
+      "type": "image",
+      "label": "Result"
+    }
+  ],
+  "models": [
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "diffusion_models/flux3-image-klein-int8-convrot.safetensors",
+      "dir": "diffusion_models",
+      "gb": 5.83,
+      "phase": "denoise",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "text_encoders/qwen3vl_4b_int8_convrot.safetensors",
+      "dir": "text_encoders",
+      "gb": 4.86,
+      "phase": "encode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    },
+    {
+      "repo": "black-forest-labs/flux-3-image-klein-comfy",
+      "file": "vae/flux2-vae.safetensors",
+      "dir": "vae",
+      "gb": 0.34,
+      "phase": "decode",
+      "gated": true,
+      "license": "FLUX Kommunity License"
+    }
+  ],
+  "credits": [
+    "FLUX 3 Image Klein by Black Forest Labs (FLUX Kommunity License)"
+  ],
+  "test": {
+    "image": "test/portrait.png",
+    "style": "two-story contemporary residential home with clean lines, dark window frames and a flat or low-slope roof",
+    "materials": "white stucco walls with warm wood accents around the entrance",
+    "vegetation": "with palm trees and native xeric plants typical of Nuevo León in the front yard",
+    "time": "at golden hour under warm orange sunset light"
+  }
+}
